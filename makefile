@@ -6,7 +6,11 @@ up:
 down:
 	docker-compose down
 
-init: build bundle rails_init instructions
+# after init, configure your db settings and run db_init
+init: chown build bundle rails_init
+
+chown:
+	sudo chown ${USER}:${USER} -R .
 
 build:
 	docker-compose build
@@ -21,11 +25,3 @@ db_init:
 rails_init:
 	docker-compose run --rm rails bundle exec rails new . \
 		--force --database=postgresql
-
-instructions: 
-	@echo "********************************************"
-	@echo "** To complete configuration, update your **"
-	@echo "** `config/databases.yml` file to match   **"
-	@echo "** the values supplied as ENV variables   **"
-	@echo "** and add `host: db` to the default conf.**"
-	@echo "** Finally, run `make db_init`.					 **"
