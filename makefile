@@ -6,18 +6,26 @@ up:
 down:
 	docker-compose down
 
-init: build bundle rails_init db_init
+init: build bundle rails_init instructions
 
 build:
-	docker-compose build --no-cache
+	docker-compose build
 
 bundle:
 	docker-compose run --rm rails bundle install
-	docker-compose run --rm rails yarn install
 
 db_init:
 	docker-compose run --rm rails bundle exec rake db:create
 	docker-compose run --rm rails bundle exec rake db:migrate
 
 rails_init:
-	docker-compose run rails rails new . --force --database=postgresql
+	docker-compose run --rm rails bundle exec rails new . \
+		--force --database=postgresql
+
+instructions: 
+	@echo "********************************************"
+	@echo "** To complete configuration, update your **"
+	@echo "** `config/databases.yml` file to match   **"
+	@echo "** the values supplied as ENV variables   **"
+	@echo "** and add `host: db` to the default conf.**"
+	@echo "** Finally, run `make db_init`.					 **"

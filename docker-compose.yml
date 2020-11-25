@@ -19,8 +19,8 @@ services:
     depends_on:
       - db
     environment:
-      BACKEND_DATABASE_USER: rails
-      BACKEND_DATABASE_PASSWORD: password
+      BDB_DATABASE_USER: rails
+      BDB_DATABASE_PASSWORD: password
       BUNDLE_PATH: /bundler/vendor
 volumes:
   postgres-data:
