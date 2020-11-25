@@ -6,6 +6,9 @@ up:
 down:
 	docker-compose down
 
+db_migrate:
+		docker-compose run --rm rails bundle exec rake db:migrate
+
 # after init, configure your db settings and run db_init
 init: chown build bundle rails_init
 
@@ -23,5 +26,5 @@ db_init:
 	docker-compose run --rm rails bundle exec rake db:migrate
 
 rails_init:
-	docker-compose run --rm rails bundle exec rails new . \
+	docker-compose run --rm --no-deps rails bundle exec rails new . \
 		--force --database=postgresql
